@@ -1,15 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using System.IO;
+using Microsoft.Extensions.FileProviders;
 using WebApi.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace WebApi
 {
@@ -30,7 +35,10 @@ namespace WebApi
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
-            services.AddControllersWithViews();
+            services.AddMvc(options => {
+                options.Filters.Add(typeof(UnhandledExceptionFilter));
+                }
+            );
 
             // DB
             services.AddDbContext<AppDb>(options =>
@@ -61,7 +69,8 @@ namespace WebApi
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+               // app.UseExceptionHandler("/Error");
+
             }
 
             app.UseStaticFiles();
@@ -85,6 +94,7 @@ namespace WebApi
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(

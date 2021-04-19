@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,7 +29,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"select userId, userName, userLastName, fileName from dbo.Users";
+            string query = @"select userId, userName, userLastName, fileName, taskName from dbo.Users";
             DataTable table = new DataTable();
             string sqlDataSource = _db.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -53,7 +54,7 @@ namespace WebApi.Controllers
         {
             string query = @"
                     insert into dbo.Users values 
-                    ('" + u.userName + "', '" + u.userLastName + "', '" + u.fileName + @"')
+                    ('" + u.userName + "', '" + u.userLastName + "', '" + u.fileName + "','" + u.taskName + @"')
                     ";
             DataTable table = new DataTable();
             string sqlDataSource = _db.GetConnectionString("DefaultConnection");
@@ -81,7 +82,7 @@ namespace WebApi.Controllers
                     update dbo.Users set 
                     userName = '" + u.userName + @"',
                     userLastName = '" + u.userLastName + @"'
-                    fileName = '" + u.fileName + @"'
+                    taskName = '" + u.taskName + @"'
                     where userId = " + u.userId + @" 
                     ";
             DataTable table = new DataTable();
@@ -152,6 +153,30 @@ namespace WebApi.Controllers
             {
 
                 return new JsonResult("anonymous.png");
+            }
+        }
+
+        [Route("getfile/{filename}")]
+        [HttpGet]
+        
+        public FileStreamResult GetFile(string filename)
+        {
+            try
+            {
+                var physicalPath = _env.ContentRootPath + "/Photos/" + filename;
+
+                var file = System.IO.File.OpenRead(physicalPath);
+                              
+                file.Position = 0;
+
+                return new FileStreamResult(file, new MediaTypeHeaderValue("image/jpeg"))
+                    {
+                        FileDownloadName = filename,
+                    };
+            }
+            catch (Exception error)
+            {
+                return null;
             }
         }
     }

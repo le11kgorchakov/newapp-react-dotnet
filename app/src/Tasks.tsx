@@ -30,14 +30,15 @@ const Tasks: React.FC<ITasks> = () =>
         setEditModal(!editModal)
     };
 
-    const deleteDep = (id: number | undefined) =>
+    const deleteTask = (id: number | undefined) =>
     {
-        refreshList()
         if (id)
         {
             axios.delete(process.env.REACT_APP_API + 'task/' + id).then(response => { return response })
+            axios.get(process.env.REACT_APP_API + 'task')
+            window.location.reload()
         }
-        refreshList()
+
     }
 
     const refreshList = () =>
@@ -52,8 +53,6 @@ const Tasks: React.FC<ITasks> = () =>
     {
         refreshList()
     }, [addModal, editModal])
-
-
 
     return (
         <div>
@@ -77,7 +76,7 @@ const Tasks: React.FC<ITasks> = () =>
                                         setEditModal(true); setTaskid(t.taskId); setTaskName(t.taskName); setDescription(t.taskDescription)
                                     }
                                     }>Edit</Button>
-                                    <Button className="mr-2" variant="info" onClick={() => { deleteDep(t.taskId) }} >Delete</Button>
+                                    <Button className="mr-2" variant="info" onClick={() => { deleteTask(t.taskId) }} >Delete</Button>
                                 </ButtonToolbar>
                             </td>
                         </tr>

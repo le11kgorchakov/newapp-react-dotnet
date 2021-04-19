@@ -14,6 +14,8 @@ const AddTaskModal: React.FC<ITaskModal> = (props) =>
     {
         e.preventDefault();
         axios.post(process.env.REACT_APP_API + 'task', { taskName: task, taskDescription: taskDescription }).then(response => { return response })
+        axios.get(process.env.REACT_APP_API + 'task')
+        hide()
     }
 
     return (

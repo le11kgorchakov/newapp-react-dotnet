@@ -11,6 +11,7 @@ export interface IUsers
     userName: string
     userLastName: string
     fileName: string
+    taskName?: string
 }
 
 export interface ITaskModal

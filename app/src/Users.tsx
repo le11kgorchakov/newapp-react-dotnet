@@ -2,6 +2,7 @@ import axios from 'axios';
 import { FunctionComponent, useEffect, useState } from 'react'
 import { Button, ButtonToolbar, Table } from 'react-bootstrap';
 import AddUserModal from './AddUserModal';
+import EditUserModal from './EditUserModal'
 import { IUsers } from './interfaces';
 
 
@@ -21,13 +22,13 @@ const User: FunctionComponent<IUsers> = () =>
 
     const toggleAddModal = () =>
     {
-        refreshList()
+        axios.get(process.env.REACT_APP_API + 'user')
         setAddModal(!addModal)
     };
 
     const toggleEditModal = () =>
     {
-        refreshList()
+        axios.get(process.env.REACT_APP_API + 'user')
         setEditModal(!editModal)
     };
 
@@ -37,6 +38,17 @@ const User: FunctionComponent<IUsers> = () =>
         {
             setUsers(response.data)
         })
+    }
+
+    const deleteUser = (id: number | undefined) =>
+    {
+        if (id)
+        {
+            axios.delete(process.env.REACT_APP_API + 'user/' + id).then(response => { return response })
+            axios.get(process.env.REACT_APP_API + 'user')
+            window.location.reload()
+        }
+
     }
 
     useEffect(() =>
@@ -51,7 +63,7 @@ const User: FunctionComponent<IUsers> = () =>
                     <th>UserId</th>
                     <th>UserName</th>
                     <th>UserLastName</th>
-                    <th>Photo</th>
+                    <th>AssignedTask</th>
                     <th>Options</th>
                 </thead>
                 <tbody>
@@ -60,15 +72,17 @@ const User: FunctionComponent<IUsers> = () =>
                             <td>{u.userId}</td>
                             <td>{u.userName}</td>
                             <td>{u.userLastName}</td>
-                            <td>{u.fileName}</td>
+                            <td>{u.taskName}</td>
                             <td>
                                 <ButtonToolbar>
-                                    <Button className="mr-2" variant="info" onClick={() =>
-                                    {
-                                        // setEditModal(true); setTaskid(t.taskId); setTaskName(t.taskName); setDescription(t.taskDescription)
-                                    }
-                                    }>Edit</Button>
-                                    <Button className="mr-2" variant="info" >Delete</Button>
+                                    <ButtonToolbar>
+                                        <Button className="mr-2" variant="info" onClick={() =>
+                                        {
+                                            setEditModal(true); setUserId(u.userId); setUserName(u.userName); setUserLastName(u.userLastName)
+                                        }
+                                        }>Edit</Button>
+                                        <Button className="mr-2" variant="info" onClick={() => { deleteUser(u.userId) }} >Delete</Button>
+                                    </ButtonToolbar>
                                 </ButtonToolbar>
                             </td>
                         </tr>
@@ -76,11 +90,9 @@ const User: FunctionComponent<IUsers> = () =>
                 </tbody>
             </Table>
             <ButtonToolbar >
-                <Button className="text-right" variant='primary' onClick={toggleAddModal} >
+                <Button variant='primary' onClick={toggleAddModal} >
                     Add User</Button>
-                {/* <EditTaskModal isShown={editModal} hide={toggleEditModal} t={
-                    { taskName: taskName ? taskName : '', taskDescription: taskDescription ? taskDescription : '', taskId: taskid ? taskid : 0 }
-                } /> */}
+                <EditUserModal isShown={editModal} hide={toggleEditModal} u={uObject} />
                 <AddUserModal isShown={addModal} hide={toggleAddModal} u={uObject} />
             </ButtonToolbar>
         </div >

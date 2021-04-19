@@ -8,11 +8,16 @@ const EditTaskModal: React.FC<ITaskModal> = (props) =>
 {
     const { isShown, hide, t } = props
     const [taskName, setTaskName] = useState<string>(t.taskName)
+    const [taskDescription, setDescription] = useState<string>(t.taskDescription)
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>
     {
         e.preventDefault();
-        axios.put(process.env.REACT_APP_API + 'task', { taskId: t.taskId, taskName: taskName }).then(response => { return response })
+        axios.put(process.env.REACT_APP_API + 'task', { taskId: t.taskId, taskName: taskName, taskDescription: taskDescription }).then(response => { console.log(response) })
+        axios.get(process.env.REACT_APP_API + 'task')
+
+        hide()
+
     }
 
     return (
@@ -39,6 +44,12 @@ const EditTaskModal: React.FC<ITaskModal> = (props) =>
                                     <Form.Label>TaskName</Form.Label>
                                     <Form.Control type="text" name="TaskName" required
                                         placeholder="TaskName" onChange={e => setTaskName(e.target.value)} defaultValue={t.taskName} />
+                                </Form.Group>
+
+                                <Form.Group controlId="TaskDescription">
+                                    <Form.Label>TaskDescription</Form.Label>
+                                    <Form.Control type="text" name="TaskDscription" required
+                                        placeholder="TaskDescription" onChange={e => setDescription(e.target.value)} defaultValue={t.taskDescription} />
                                 </Form.Group>
 
                                 <Form.Group>

@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Data;
 
 namespace WebApi.Migrations
 {
     [DbContext(typeof(AppDb))]
-    partial class AppDbModelSnapshot : ModelSnapshot
+    [Migration("20210419021732_fixId")]
+    partial class fixId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,8 +48,8 @@ namespace WebApi.Migrations
                     b.Property<string>("fileName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("taskName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("taskId")
+                        .HasColumnType("int");
 
                     b.Property<string>("userLastName")
                         .HasColumnType("nvarchar(max)");

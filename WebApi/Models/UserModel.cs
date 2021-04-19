@@ -12,7 +12,7 @@ namespace WebApi.Models
        public int userId { get; set; }
        public string userName { get; set; }
        public string userLastName { get; set; }
-
        public string fileName { get; set; }
+       public string taskName { get; set; }
     }
 }
