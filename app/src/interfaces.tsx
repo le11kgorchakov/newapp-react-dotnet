@@ -3,6 +3,8 @@ export interface ITasks
     taskId: number
     taskName: string
     taskDescription: string
+    taskStartDate: string
+    taskDueDate: string
 }
 
 export interface IUsers

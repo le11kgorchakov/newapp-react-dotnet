@@ -26,7 +26,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public JsonResult Get()
         {
-            string query = @"select taskId, taskName, taskDescription from dbo.Tasks";
+            string query = @"select taskId, taskName, taskDescription, taskStartDate, taskDueDate from dbo.Tasks";
             DataTable table = new DataTable();
             string sqlDataSource = _db.GetConnectionString("DefaultConnection");
             SqlDataReader myReader;
@@ -51,7 +51,7 @@ namespace WebApi.Controllers
         {
             string query = @"
                     insert into dbo.tasks values 
-                    ('" + t.taskName + "', '"+ t.taskDescription + @"')
+                    ('" + t.taskName + "', '"+ t.taskDescription + "', '" + t.taskStartDate + "' , '" + t.taskDueDate + @"')
                     ";
             DataTable table = new DataTable();
             string sqlDataSource = _db.GetConnectionString("DefaultConnection");
@@ -78,7 +78,9 @@ namespace WebApi.Controllers
             string query = @"
                     update dbo.Tasks set 
                     taskName = '" + t.taskName + @"',
-                    taskDescription = '"+ t.taskDescription+@"'
+                    taskDescription = '"+ t.taskDescription+ @"',
+                    taskStartDate = '" + t.taskStartDate + @"', 
+                    taskDueDate = '" + t.taskDueDate + @"'
                     where taskId = " + t.taskId + @" 
                     ";
             DataTable table = new DataTable();

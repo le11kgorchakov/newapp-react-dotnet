@@ -12,5 +12,7 @@ namespace WebApi.Models
         public int taskId { get; set; }
         public string taskName { get; set; }
         public string taskDescription { get; set; }
+        public string taskStartDate { get; set; }
+        public string taskDueDate { get; set; }
     }
 }

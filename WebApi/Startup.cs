@@ -70,7 +70,6 @@ namespace WebApi
             else
             {
                // app.UseExceptionHandler("/Error");
-
             }
 
             app.UseStaticFiles();

@@ -81,7 +81,8 @@ namespace WebApi.Controllers
             string query = @"
                     update dbo.Users set 
                     userName = '" + u.userName + @"',
-                    userLastName = '" + u.userLastName + @"'
+                    userLastName = '" + u.userLastName + @"',
+                    fileName = '" + u.fileName + @"',
                     taskName = '" + u.taskName + @"'
                     where userId = " + u.userId + @" 
                     ";

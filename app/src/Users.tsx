@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { FunctionComponent, useEffect, useState } from 'react'
-import { Button, ButtonToolbar, Table } from 'react-bootstrap';
+import { Button, ButtonToolbar, Table, Image } from 'react-bootstrap';
 import AddUserModal from './AddUserModal';
 import EditUserModal from './EditUserModal'
 import { IUsers } from './interfaces';
@@ -15,26 +15,31 @@ const User: FunctionComponent<IUsers> = () =>
     const [userId, setUserId] = useState<number>()
     const [userName, setUserName] = useState<string>()
     const [userLastName, setUserLastName] = useState<string>()
-    const [fileName, setFileName] = useState<string>()
+    const [selectedTask, setSelectedTask] = useState<string>()
+    const [photoFileName, setPhotoFileName] = useState("anonymous.png")
     const uObject = {
-        userName: userName ? userName : '', userLastName: userLastName ? userLastName : '', userId: userId ? userId : 0, fileName: fileName ? fileName : 'undefined'
+        userName: userName ? userName : '',
+        userLastName: userLastName ? userLastName : '',
+        userId: userId ? userId : 0,
+        fileName: photoFileName ? photoFileName : 'undefined',
+        taskName: selectedTask ? selectedTask : ''
     }
 
     const toggleAddModal = () =>
     {
-        axios.get(process.env.REACT_APP_API + 'user')
+        refreshList()
         setAddModal(!addModal)
     };
 
     const toggleEditModal = () =>
     {
-        axios.get(process.env.REACT_APP_API + 'user')
+        refreshList()
         setEditModal(!editModal)
     };
 
     const refreshList = () =>
     {
-        axios.get(process.env.REACT_APP_API + 'user').then(response =>
+        axios.get<IUsers[]>(process.env.REACT_APP_API + 'user').then(response =>
         {
             setUsers(response.data)
         })
@@ -44,26 +49,27 @@ const User: FunctionComponent<IUsers> = () =>
     {
         if (id)
         {
-            axios.delete(process.env.REACT_APP_API + 'user/' + id).then(response => { return response })
-            axios.get(process.env.REACT_APP_API + 'user')
+            axios.delete<number>(process.env.REACT_APP_API + 'user/' + id).then(response => { return response })
+            axios.get<IUsers>(process.env.REACT_APP_API + 'user')
             window.location.reload()
         }
-
     }
 
     useEffect(() =>
     {
         refreshList()
-    }, [])
+    }, [addModal, editModal])
 
     return (
         <div>
+            <h2 className="mt-4" >Users Overview</h2>
             <Table className="mt-4" striped bordered hover size="sm">
                 <thead>
-                    <th>UserId</th>
-                    <th>UserName</th>
-                    <th>UserLastName</th>
-                    <th>AssignedTask</th>
+                    <th>User Id</th>
+                    <th>User Name</th>
+                    <th>Last Name</th>
+                    <th>Assigned Task</th>
+                    <th>Thumbnail</th>
                     <th>Options</th>
                 </thead>
                 <tbody>
@@ -74,11 +80,16 @@ const User: FunctionComponent<IUsers> = () =>
                             <td>{u.userLastName}</td>
                             <td>{u.taskName}</td>
                             <td>
+                                <Image width="40px" height="40px" src={process.env.REACT_APP_API + 'user/getfile/' + u.fileName} />
+                            </td>
+                            <td>
                                 <ButtonToolbar>
                                     <ButtonToolbar>
                                         <Button className="mr-2" variant="info" onClick={() =>
                                         {
-                                            setEditModal(true); setUserId(u.userId); setUserName(u.userName); setUserLastName(u.userLastName)
+                                            setEditModal(true); setUserId(u.userId); setUserName(u.userName);
+                                            setUserLastName(u.userLastName); setPhotoFileName(u.fileName);
+                                            setSelectedTask(u.taskName)
                                         }
                                         }>Edit</Button>
                                         <Button className="mr-2" variant="info" onClick={() => { deleteUser(u.userId) }} >Delete</Button>

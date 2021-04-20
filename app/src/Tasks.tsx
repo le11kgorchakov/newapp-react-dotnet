@@ -15,9 +15,16 @@ const Tasks: React.FC<ITasks> = () =>
     const [taskid, setTaskid] = useState<number>()
     const [taskName, setTaskName] = useState<string>()
     const [taskDescription, setDescription] = useState<string>()
+    const [taskStartDate, setStartDate] = useState<string>()
+    const [taskDueDate, setDueDate] = useState<string>()
     const tObject = {
-        taskName: taskName ? taskName : '', taskDescription: taskDescription ? taskDescription : '', taskId: taskid ? taskid : 0
+        taskName: taskName ? taskName : '',
+        taskDescription: taskDescription ? taskDescription : '',
+        taskId: taskid ? taskid : 0,
+        taskStartDate: taskStartDate ? taskStartDate : '',
+        taskDueDate: taskDueDate ? taskDueDate : ''
     }
+
     const toggleAddModal = () =>
     {
         refreshList()
@@ -34,8 +41,8 @@ const Tasks: React.FC<ITasks> = () =>
     {
         if (id)
         {
-            axios.delete(process.env.REACT_APP_API + 'task/' + id).then(response => { return response })
-            axios.get(process.env.REACT_APP_API + 'task')
+            axios.delete<number>(process.env.REACT_APP_API + 'task/' + id).then(response => { return response })
+            axios.get<ITasks>(process.env.REACT_APP_API + 'task')
             window.location.reload()
         }
 
@@ -43,7 +50,7 @@ const Tasks: React.FC<ITasks> = () =>
 
     const refreshList = () =>
     {
-        axios.get(process.env.REACT_APP_API + 'task').then(response =>
+        axios.get<ITasks[]>(process.env.REACT_APP_API + 'task').then(response =>
         {
             setTasks(response.data)
         })
@@ -56,11 +63,14 @@ const Tasks: React.FC<ITasks> = () =>
 
     return (
         <div>
+            <h2 className="mt-4" >Tasks Overview</h2>
             <Table className="mt-4" striped bordered hover size="sm">
                 <thead>
-                    <th>TaskId</th>
-                    <th>TaskName</th>
-                    <th>TaskDescription</th>
+                    <th>Task Id</th>
+                    <th>Task Name</th>
+                    <th>Task Description</th>
+                    <th>Start Date</th>
+                    <th>Due Date</th>
                     <th>Options</th>
                 </thead>
                 <tbody>
@@ -69,11 +79,15 @@ const Tasks: React.FC<ITasks> = () =>
                             <td>{t.taskId}</td>
                             <td>{t.taskName}</td>
                             <td>{t.taskDescription}</td>
+                            <td>{t.taskStartDate}</td>
+                            <td>{t.taskDueDate}</td>
                             <td>
                                 <ButtonToolbar>
                                     <Button className="mr-2" variant="info" onClick={() =>
                                     {
-                                        setEditModal(true); setTaskid(t.taskId); setTaskName(t.taskName); setDescription(t.taskDescription)
+                                        setEditModal(true); setTaskid(t.taskId); setTaskName(t.taskName);
+                                        setDescription(t.taskDescription); setStartDate(t.taskStartDate);
+                                        setDueDate(t.taskDueDate);
                                     }
                                     }>Edit</Button>
                                     <Button className="mr-2" variant="info" onClick={() => { deleteTask(t.taskId) }} >Delete</Button>

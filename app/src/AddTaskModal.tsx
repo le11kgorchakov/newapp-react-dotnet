@@ -2,19 +2,25 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { ITaskModal } from './interfaces';
+import { ITaskModal, ITasks } from './interfaces';
 
 const AddTaskModal: React.FC<ITaskModal> = (props) =>
 {
     const { isShown, hide } = props
-    const [task, setTaskName] = useState<string>()
+    const [taskName, setTaskName] = useState<string>()
     const [taskDescription, setDescription] = useState<string>()
+    const [taskStartDate, setStartDate] = useState<string>()
+    const [taskDueDate, setDueDate] = useState<string>()
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>
     {
         e.preventDefault();
-        axios.post(process.env.REACT_APP_API + 'task', { taskName: task, taskDescription: taskDescription }).then(response => { return response })
+        axios.post<ITasks>(process.env.REACT_APP_API + 'task', {
+            taskName: taskName, taskDescription: taskDescription,
+            taskStartDate: taskStartDate, taskDueDate: taskDueDate
+        }).then(response => { return response })
         axios.get(process.env.REACT_APP_API + 'task')
+        window.location.reload()
         hide()
     }
 
@@ -32,13 +38,13 @@ const AddTaskModal: React.FC<ITaskModal> = (props) =>
                         <Col sm={6}>
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group controlId="TaskName">
-                                    <Form.Label>TaskName</Form.Label>
+                                    <Form.Label>Task Name</Form.Label>
                                     <Form.Control type="text" name="TaskName" required
                                         placeholder="TaskName" onChange={e => setTaskName(e.target.value)} />
                                 </Form.Group>
 
                                 <Form.Group controlId="TaskDescription">
-                                    <Form.Label>TaskName</Form.Label>
+                                    <Form.Label>Task Description</Form.Label>
                                     <Form.Control type="text" name="TaskDescription" required
                                         placeholder="TaskDescription" onChange={e => setDescription(e.target.value)} />
                                 </Form.Group>
@@ -50,6 +56,31 @@ const AddTaskModal: React.FC<ITaskModal> = (props) =>
                                 </Form.Group>
                             </Form>
                         </Col>
+
+                        <Col sm={6}>
+                            <Form.Group controlId="StartDate">
+                                <Form.Label>StartDate</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    name="StartDate"
+                                    required
+                                    placeholder="StartDate"
+                                    onChange={e => setStartDate(e.target.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="DueDate">
+                                <Form.Label>DueDate</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    name="DueDate"
+                                    required
+                                    placeholder="DueDate"
+                                    onChange={e => setDueDate(e.target.value)}
+                                />
+                            </Form.Group>
+                        </Col>
+
                     </Row>
                 </Modal.Body>
 
