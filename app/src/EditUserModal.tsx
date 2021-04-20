@@ -77,7 +77,7 @@ const EditUserModal: React.FC<IUserModal> = (props) =>
                                 </Form.Group>
 
                                 <Form.Group controlId="UserName">
-                                    <Form.Label>User Name</Form.Label>
+                                    <Form.Label>First Name</Form.Label>
                                     <Form.Control type="text" name="UserName" required
                                         placeholder="UserName" onChange={e => setUserName(e.target.value)} defaultValue={u.userName} />
                                 </Form.Group>

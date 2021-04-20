@@ -66,7 +66,7 @@ const User: FunctionComponent<IUsers> = () =>
             <Table className="mt-4" striped bordered hover size="sm">
                 <thead>
                     <th>User Id</th>
-                    <th>User Name</th>
+                    <th>First Name</th>
                     <th>Last Name</th>
                     <th>Assigned Task</th>
                     <th>Thumbnail</th>

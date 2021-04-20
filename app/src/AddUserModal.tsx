@@ -73,7 +73,7 @@ const AddUserModal: React.FC<IUserModal> = (props) =>
                         <Col sm={6}>
                             <Form onSubmit={handleSubmit}>
                                 <Form.Group controlId="UserName">
-                                    <Form.Label>User Name</Form.Label>
+                                    <Form.Label>First Name</Form.Label>
                                     <Form.Control type="text" name="UserName" required
                                         placeholder="UserName" onChange={e => setUserName(e.target.value)} />
                                 </Form.Group>
