@@ -94,6 +94,7 @@ const EditUserModal: React.FC<IUserModal> = (props) =>
                                     {
                                         setSelectedTask(e.target.value)
                                     }} >
+                                        <option>Select Task</option>
                                         {tasks.map(t =>
                                             <option key={t.taskId} >{t.taskName}</option>)}
                                     </Form.Control>

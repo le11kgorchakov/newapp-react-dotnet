@@ -87,6 +87,7 @@ const AddUserModal: React.FC<IUserModal> = (props) =>
                                 <Form.Group controlId="Task">
                                     <Form.Label>Select Task</Form.Label>
                                     <Form.Control as="select" onChange={e => setSelectedTask(e.target.value)}>
+                                        <option>Select Task</option>
                                         {tasks.map(t =>
                                             <option key={t.taskId} >{t.taskName}</option>)}
                                     </Form.Control>
