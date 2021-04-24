@@ -64,29 +64,24 @@ const EditUserModal: React.FC<IUserModal> = (props) =>
                 </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
                     <Row>
                         <Col sm={6}>
                             <Form onSubmit={handleSubmit}>
-
                                 <Form.Group controlId="UserID">
                                     <Form.Label>User ID</Form.Label>
                                     <Form.Control type="text" name="UserID" required
                                         placeholder="UserID" disabled defaultValue={u.userId} />
                                 </Form.Group>
-
                                 <Form.Group controlId="UserName">
                                     <Form.Label>First Name</Form.Label>
                                     <Form.Control type="text" name="UserName" required
                                         placeholder="UserName" onChange={e => setUserName(e.target.value)} defaultValue={u.userName} />
                                 </Form.Group>
-
                                 <Form.Group controlId="UserLastName">
                                     <Form.Label>Last Name</Form.Label>
                                     <Form.Control type="text" name="UserName" required
                                         placeholder="UserLastName" onChange={e => setUserLastName(e.target.value)} defaultValue={u.userLastName} />
                                 </Form.Group>
-
                                 <Form.Group controlId="Task">
                                     <Form.Label>Task</Form.Label>
                                     <Form.Control as="select" defaultValue={u.taskName} onChange={e =>
@@ -98,7 +93,6 @@ const EditUserModal: React.FC<IUserModal> = (props) =>
                                             <option key={t.taskId} >{t.taskName}</option>)}
                                     </Form.Control>
                                 </Form.Group>
-
                                 <Form.Group>
                                     <Button variant="primary" type="submit">
                                         Update User
@@ -112,13 +106,10 @@ const EditUserModal: React.FC<IUserModal> = (props) =>
                         </Col>
                     </Row>
                 </Modal.Body>
-
                 <Modal.Footer>
                     <Button variant="danger" onClick={hide} >Close</Button>
                 </Modal.Footer>
-
             </Modal>
-
         </div>
     )
 }
