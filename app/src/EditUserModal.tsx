@@ -14,7 +14,6 @@ const EditUserModal: React.FC<IUserModal> = (props) =>
     const [photoFileName, setPhotoFileName] = useState<string>()
     const [imageSrc, setImageSrc] = useState<string>()
 
-
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => 
     {
         e.preventDefault();
@@ -90,7 +89,7 @@ const EditUserModal: React.FC<IUserModal> = (props) =>
 
                                 <Form.Group controlId="Task">
                                     <Form.Label>Task</Form.Label>
-                                    <Form.Control as="select" onChange={e =>
+                                    <Form.Control as="select" defaultValue={u.taskName} onChange={e =>
                                     {
                                         setSelectedTask(e.target.value)
                                     }} >
