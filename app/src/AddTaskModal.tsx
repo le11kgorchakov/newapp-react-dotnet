@@ -30,8 +30,8 @@ const AddTaskModal: React.FC<ITaskModal> = (props) =>
                         Add Task
                 </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
 
+                <Modal.Body>
                     <Row>
                         <Col sm={6}>
                             <Form onSubmit={handleSubmit}>
@@ -40,13 +40,11 @@ const AddTaskModal: React.FC<ITaskModal> = (props) =>
                                     <Form.Control type="text" name="TaskName" required
                                         placeholder="TaskName" onChange={e => setTaskName(e.target.value)} />
                                 </Form.Group>
-
                                 <Form.Group controlId="TaskDescription">
                                     <Form.Label>Task Description</Form.Label>
                                     <Form.Control type="text" name="TaskDescription" required
                                         placeholder="TaskDescription" onChange={e => setDescription(e.target.value)} />
                                 </Form.Group>
-
                                 <Form.Group>
                                     <Button variant="primary" type="submit">
                                         Add Task
@@ -54,7 +52,6 @@ const AddTaskModal: React.FC<ITaskModal> = (props) =>
                                 </Form.Group>
                             </Form>
                         </Col>
-
                         <Col sm={6}>
                             <Form.Group controlId="StartDate">
                                 <Form.Label>StartDate</Form.Label>
@@ -66,7 +63,6 @@ const AddTaskModal: React.FC<ITaskModal> = (props) =>
                                     onChange={e => setStartDate(e.target.value)}
                                 />
                             </Form.Group>
-
                             <Form.Group controlId="DueDate">
                                 <Form.Label>DueDate</Form.Label>
                                 <Form.Control
@@ -78,7 +74,6 @@ const AddTaskModal: React.FC<ITaskModal> = (props) =>
                                 />
                             </Form.Group>
                         </Col>
-
                     </Row>
                 </Modal.Body>
 
