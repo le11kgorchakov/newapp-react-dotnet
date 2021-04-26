@@ -2,21 +2,22 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonToolbar, Table } from 'react-bootstrap'
 import AddTaskModal from './AddTaskModal'
-import { ITasks } from './interfaces'
+import DuplicateTaskModal from './DuplicateTaskModal'
 import EditTaskModal from './EditTaskModal'
-
-
+import { ITasks } from './interfaces'
 
 const Tasks: React.FC<ITasks> = () =>
 {
     const [tasks, setTasks] = useState<ITasks[]>([])
     const [addModal, setAddModal] = useState(false);
     const [editModal, setEditModal] = useState(false);
+    const [dupModal, setDupModal] = useState(false);
     const [taskid, setTaskid] = useState<number>()
     const [taskName, setTaskName] = useState<string>()
     const [taskDescription, setDescription] = useState<string>()
     const [taskStartDate, setStartDate] = useState<string>()
     const [taskDueDate, setDueDate] = useState<string>()
+    const [isDelete, setIsDelete] = useState(false)
     const tObject = {
         taskName: taskName ? taskName : '',
         taskDescription: taskDescription ? taskDescription : '',
@@ -33,8 +34,12 @@ const Tasks: React.FC<ITasks> = () =>
 
     const toggleEditModal = () =>
     {
-        refreshList()
         setEditModal(!editModal)
+    };
+
+    const toggleDupModal = () =>
+    {
+        setDupModal(!dupModal)
     };
 
     const deleteTask = (id: number | undefined) =>
@@ -42,8 +47,6 @@ const Tasks: React.FC<ITasks> = () =>
         if (id)
         {
             axios.delete<number>(process.env.REACT_APP_API + 'task/' + id).then(response => { return response })
-            axios.get<ITasks>(process.env.REACT_APP_API + 'task')
-            window.location.reload()
         }
 
     }
@@ -59,7 +62,8 @@ const Tasks: React.FC<ITasks> = () =>
     useEffect(() =>
     {
         refreshList()
-    }, [addModal, editModal])
+        setIsDelete(false)
+    }, [addModal, editModal, isDelete, dupModal])
 
     return (
         <div>
@@ -82,7 +86,7 @@ const Tasks: React.FC<ITasks> = () =>
                             <td>{t.taskStartDate}</td>
                             <td>{t.taskDueDate}</td>
                             <td>
-                                <ButtonToolbar>
+                                <ButtonToolbar className="justify-content-center">
                                     <Button className="mr-2" variant="info" onClick={() =>
                                     {
                                         setEditModal(true); setTaskid(t.taskId); setTaskName(t.taskName);
@@ -90,7 +94,14 @@ const Tasks: React.FC<ITasks> = () =>
                                         setDueDate(t.taskDueDate);
                                     }
                                     }>Edit</Button>
-                                    <Button className="mr-2" variant="info" onClick={() => { deleteTask(t.taskId) }} >Delete</Button>
+                                    <Button className="mr-2" variant="info" onClick={() =>
+                                    {
+                                        setDupModal(true); setTaskid(t.taskId); setTaskName(t.taskName);
+                                        setDescription(t.taskDescription); setStartDate(t.taskStartDate);
+                                        setDueDate(t.taskDueDate);
+                                    }
+                                    }>Duplicate</Button>
+                                    <Button className="mr-2" variant="info" onClick={() => { deleteTask(t.taskId); setIsDelete(true) }} >Delete</Button>
                                 </ButtonToolbar>
                             </td>
                         </tr>
@@ -102,6 +113,7 @@ const Tasks: React.FC<ITasks> = () =>
                     Add Task</Button>
                 <EditTaskModal isShown={editModal} hide={toggleEditModal} t={tObject} />
                 <AddTaskModal isShown={addModal} hide={toggleAddModal} t={tObject} />
+                <DuplicateTaskModal isShown={dupModal} hide={toggleDupModal} t={tObject} />
             </ButtonToolbar>
         </div >
     )
