@@ -7,7 +7,7 @@ GO
 USE WebApi;
 GO
 
-CREATE TABLE users (
+CREATE TABLE Users (
   userId        INT           NOT NULL  IDENTITY  PRIMARY KEY,
   userName     VARCHAR(50)   NOT NULL,
   userLastName      VARCHAR(50)   NOT NULL,
@@ -16,12 +16,12 @@ CREATE TABLE users (
 );
 GO
 
-INSERT INTO users (firstName, lastName) VALUES 
+INSERT INTO Users (userName, userLastName) VALUES 
   ('mark', 'twain'),
   ('tom', 'sawyer');
 GO
 
-CREATE TABLE tasks (
+CREATE TABLE Tasks (
   taskId        INT           NOT NULL  IDENTITY  PRIMARY KEY,
   taskName         VARCHAR(50)  NOT NULL,
   taskDescription   VARCHAR(5000) NOT NULL, 
@@ -30,7 +30,7 @@ CREATE TABLE tasks (
 );
 GO
 
-INSERT INTO tasks (title, description) VALUES
+INSERT INTO Tasks (taskName, taskDescription) VALUES
   ('first', 'this is the first task'),
   ('second', 'this is the second task');
 GO

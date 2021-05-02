@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "description": "alexey app",
   "scripts": {
-    "build:db": "docker build -t webapi-mssql-server .",
-    "restart:container": "docker restart webapi",
-    "rm:container": "docker container rm webapi",
-    "rm:image": "docker image rm webapi-mssql-server",
-    "start:db": "docker run -d -p 1433:1433 --name webapi webapi-mssql-server",
-    "stop:db": "docker container stop webapi"
+    "build:db": "docker build -t webapidb .",
+    "restart:container": "docker restart webapidb-container",
+    "rm:container": "docker container rm webapidb-container",
+    "rm:image": "docker image rm webapidb",
+    "start:db": "docker run -d -p 1433:1433 --name webapidb-container webapidb",
+    "stop:db": "docker container stop webapidb-container"
   },
   "author": "alexey g",
   "license": "UNLICENSED"

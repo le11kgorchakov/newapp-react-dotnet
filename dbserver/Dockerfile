@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/mssql/server:2019-latest
 
 ENV ACCEPT_EULA=Y
-ENV SA_PASSWORD=
+ENV SA_PASSWORD=qwertyUIO123!
 
 EXPOSE 1433
 

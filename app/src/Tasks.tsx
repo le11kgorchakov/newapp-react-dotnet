@@ -18,6 +18,7 @@ const Tasks: React.FC<ITasks> = () =>
     const [taskStartDate, setStartDate] = useState<string>()
     const [taskDueDate, setDueDate] = useState<string>()
     const [isDelete, setIsDelete] = useState(false)
+    const [modalType, setModalType] = useState<string>('add')
     const tObject = {
         taskName: taskName ? taskName : '',
         taskDescription: taskDescription ? taskDescription : '',
@@ -89,13 +90,14 @@ const Tasks: React.FC<ITasks> = () =>
                                 <ButtonToolbar className="justify-content-center">
                                     <Button className="mr-2" variant="info" onClick={() =>
                                     {
-                                        setEditModal(true); setTaskid(t.taskId); setTaskName(t.taskName);
+                                        setAddModal(true); setTaskid(t.taskId); setTaskName(t.taskName);
                                         setDescription(t.taskDescription); setStartDate(t.taskStartDate);
                                         setDueDate(t.taskDueDate);
                                     }
                                     }>Edit</Button>
                                     <Button className="mr-2" variant="info" onClick={() =>
                                     {
+                                        setModalType('edit');
                                         setDupModal(true); setTaskid(t.taskId); setTaskName(t.taskName);
                                         setDescription(t.taskDescription); setStartDate(t.taskStartDate);
                                         setDueDate(t.taskDueDate);
@@ -109,11 +111,11 @@ const Tasks: React.FC<ITasks> = () =>
                 </tbody>
             </Table>
             <ButtonToolbar>
-                <Button variant='primary' onClick={toggleAddModal} >
+                <Button variant='primary' onClick={() => { setAddModal(true); setModalType('add') }} >
                     Add Task</Button>
-                <EditTaskModal isShown={editModal} hide={toggleEditModal} t={tObject} />
-                <AddTaskModal isShown={addModal} hide={toggleAddModal} t={tObject} />
-                <DuplicateTaskModal isShown={dupModal} hide={toggleDupModal} t={tObject} />
+                <AddTaskModal isShown={addModal} hide={toggleAddModal} t={tObject} modalType={modalType} />
+                {/* <EditTaskModal isShown={editModal} hide={toggleEditModal} t={tObject} />
+                <DuplicateTaskModal isShown={dupModal} hide={toggleDupModal} t={tObject} /> */}
             </ButtonToolbar>
         </div >
     )
