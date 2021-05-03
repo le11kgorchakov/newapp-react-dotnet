@@ -11,8 +11,8 @@ CREATE TABLE Users (
   userId        INT           NOT NULL  IDENTITY  PRIMARY KEY,
   userName     VARCHAR(50)   NOT NULL,
   userLastName      VARCHAR(50)   NOT NULL,
-  fileName      VARCHAR(50)   NOT NULL,
-  taskName       VARCHAR(50)   NOT NULL
+  taskName       VARCHAR(50)   NOT NULL,
+  fileName      VARCHAR(50)   NOT NULL
 );
 GO
 

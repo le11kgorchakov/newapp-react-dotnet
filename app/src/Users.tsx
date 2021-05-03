@@ -15,6 +15,7 @@ const User: FunctionComponent<IUsers> = () =>
     const [userLastName, setUserLastName] = useState<string>()
     const [selectedTask, setSelectedTask] = useState<string>()
     const [modal, setModal] = useState<string>('add')
+    const [pageUpdate, setPageUpdate] = useState(false)
     const [photoFileName, setPhotoFileName] = useState("anonymous.png")
     const uObject = {
         userName: userName ? userName : '',
@@ -26,8 +27,8 @@ const User: FunctionComponent<IUsers> = () =>
 
     const toggleModal = () =>
     {
-        refreshList()
         setShowModal(!showModal)
+        setPageUpdate(true)
     };
 
     const refreshList = () =>
@@ -43,15 +44,15 @@ const User: FunctionComponent<IUsers> = () =>
         if (id)
         {
             axios.delete<number>(process.env.REACT_APP_API + 'user/' + id).then(response => { return response })
-            axios.get<IUsers>(process.env.REACT_APP_API + 'user')
-            window.location.reload()
+            setPageUpdate(true)
         }
     }
 
     useEffect(() =>
     {
         refreshList()
-    }, [showModal])
+        setPageUpdate(false)
+    }, [showModal, pageUpdate])
 
     return (
         <div>
@@ -89,6 +90,19 @@ const User: FunctionComponent<IUsers> = () =>
                                             setSelectedTask(u.taskName)
                                         }
                                         }>Edit</Button>
+
+                                        <Button className="mr-2" variant="info" onClick={() =>
+                                        {
+                                            setModal('duplicate');
+                                            setShowModal(true);
+                                            setUserId(u.userId);
+                                            setUserName(`Copy of ${u.userName}`);
+                                            setUserLastName(u.userLastName);
+                                            setPhotoFileName(u.fileName);
+                                            setSelectedTask(u.taskName)
+                                        }
+                                        }>Duplicate</Button>
+
                                         <Button className="mr-2" variant="info" onClick={() => { deleteUser(u.userId) }} >Delete</Button>
                                     </ButtonToolbar>
                                 </ButtonToolbar>

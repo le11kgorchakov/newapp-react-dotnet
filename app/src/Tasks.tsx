@@ -13,7 +13,7 @@ const Tasks: React.FC<ITasks> = () =>
     const [taskDescription, setDescription] = useState<string>()
     const [taskStartDate, setStartDate] = useState<string>()
     const [taskDueDate, setDueDate] = useState<string>()
-    const [refresh, isRefresh] = useState(false)
+    const [pageUpdate, setPageUpdate] = useState(false)
     const [modal, setModal] = useState<string>('add')
     const tObject = {
         taskName: taskName ? taskName : '',
@@ -25,8 +25,8 @@ const Tasks: React.FC<ITasks> = () =>
 
     const toggleModal = () =>
     {
-        refreshList()
         setShowModal(!showModal)
+        setPageUpdate(true)
     };
 
     const deleteTask = (id: number | undefined) =>
@@ -34,7 +34,7 @@ const Tasks: React.FC<ITasks> = () =>
         if (id)
         {
             axios.delete<number>(process.env.REACT_APP_API + 'task/' + id).then(response => { return response })
-            isRefresh(true)
+            setPageUpdate(true)
         }
 
     }
@@ -50,9 +50,8 @@ const Tasks: React.FC<ITasks> = () =>
     useEffect(() =>
     {
         refreshList()
-        isRefresh(false)
-
-    }, [refresh, showModal])
+        setPageUpdate(false)
+    }, [pageUpdate, showModal])
 
     return (
         <div>
@@ -98,7 +97,7 @@ const Tasks: React.FC<ITasks> = () =>
                                         setDueDate(t.taskDueDate);
                                     }
                                     }>Duplicate</Button>
-                                    <Button className="mr-2" variant="info" onClick={() => { deleteTask(t.taskId); isRefresh(true) }} >Delete</Button>
+                                    <Button className="mr-2" variant="info" onClick={() => { deleteTask(t.taskId); setPageUpdate(true) }} >Delete</Button>
                                 </ButtonToolbar>
                             </td>
                         </tr>
