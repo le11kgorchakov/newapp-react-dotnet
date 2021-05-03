@@ -18,4 +18,4 @@ db is required
 - build:db
 - start:db
 
-you have to have <dotnet> installed and <docker>
+you have to have DOCKER installed and DOTNET
