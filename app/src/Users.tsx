@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { FunctionComponent, useEffect, useState } from 'react'
 import { Button, ButtonToolbar, Table, Image } from 'react-bootstrap';
-import AddUserModal from './AddUserModal';
-import EditUserModal from './EditUserModal'
+import UserModal from './UserModal';
 import { IUsers } from './interfaces';
 
 
@@ -10,12 +9,12 @@ import { IUsers } from './interfaces';
 const User: FunctionComponent<IUsers> = () =>
 {
     const [users, setUsers] = useState<IUsers[]>([])
-    const [addModal, setAddModal] = useState(false);
-    const [editModal, setEditModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [userId, setUserId] = useState<number>()
     const [userName, setUserName] = useState<string>()
     const [userLastName, setUserLastName] = useState<string>()
     const [selectedTask, setSelectedTask] = useState<string>()
+    const [modal, setModal] = useState<string>('add')
     const [photoFileName, setPhotoFileName] = useState("anonymous.png")
     const uObject = {
         userName: userName ? userName : '',
@@ -25,16 +24,10 @@ const User: FunctionComponent<IUsers> = () =>
         taskName: selectedTask ? selectedTask : ''
     }
 
-    const toggleAddModal = () =>
+    const toggleModal = () =>
     {
         refreshList()
-        setAddModal(!addModal)
-    };
-
-    const toggleEditModal = () =>
-    {
-        refreshList()
-        setEditModal(!editModal)
+        setShowModal(!showModal)
     };
 
     const refreshList = () =>
@@ -58,7 +51,7 @@ const User: FunctionComponent<IUsers> = () =>
     useEffect(() =>
     {
         refreshList()
-    }, [addModal, editModal])
+    }, [showModal])
 
     return (
         <div>
@@ -87,8 +80,12 @@ const User: FunctionComponent<IUsers> = () =>
                                     <ButtonToolbar>
                                         <Button className="mr-2" variant="info" onClick={() =>
                                         {
-                                            setEditModal(true); setUserId(u.userId); setUserName(u.userName);
-                                            setUserLastName(u.userLastName); setPhotoFileName(u.fileName);
+                                            setShowModal(true);
+                                            setModal('edit')
+                                            setUserId(u.userId);
+                                            setUserName(u.userName);
+                                            setUserLastName(u.userLastName);
+                                            setPhotoFileName(u.fileName);
                                             setSelectedTask(u.taskName)
                                         }
                                         }>Edit</Button>
@@ -101,10 +98,9 @@ const User: FunctionComponent<IUsers> = () =>
                 </tbody>
             </Table>
             <ButtonToolbar >
-                <Button variant='primary' onClick={toggleAddModal} >
+                <Button variant='primary' onClick={() => { setShowModal(true); setModal('add') }} >
                     Add User</Button>
-                <EditUserModal isShown={editModal} hide={toggleEditModal} u={uObject} />
-                <AddUserModal isShown={addModal} hide={toggleAddModal} u={uObject} />
+                <UserModal isShown={showModal} u={uObject} modalType={modal} hide={toggleModal} />
             </ButtonToolbar>
         </div >
     )

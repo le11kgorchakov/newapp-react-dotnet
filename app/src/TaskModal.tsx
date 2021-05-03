@@ -1,9 +1,9 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { Button, Col, Form, Modal, Row } from "react-bootstrap"
-import { ITaskModalOptions, ITasks } from "./interfaces"
+import { ITaskModal, ITasks } from "./interfaces"
 
-const TaskModal: React.FC<ITaskModalOptions> = (props) =>
+const TaskModal: React.FC<ITaskModal> = (props) =>
 {
     const { hide, isShown, t, modalType } = props
     const [taskName, setTaskName] = useState<string>()

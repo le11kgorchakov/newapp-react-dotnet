@@ -1,10 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Button, ButtonToolbar, Table } from 'react-bootstrap'
-import AddTaskModal from './AddTaskModal'
-import DuplicateTaskModal from './DuplicateTaskModal'
-import EditTaskModal from './EditTaskModal'
-import { ITaskModalOptions, ITasks } from './interfaces'
+import { ITasks } from './interfaces'
 import TaskModal from './TaskModal'
 
 const Tasks: React.FC<ITasks> = () =>
@@ -55,7 +52,7 @@ const Tasks: React.FC<ITasks> = () =>
         refreshList()
         isRefresh(false)
 
-    }, [refresh, showModal])                                               //[addModal, editModal, refresh, dupModal])
+    }, [refresh, showModal])
 
     return (
         <div>
