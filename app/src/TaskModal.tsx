@@ -1,18 +1,43 @@
+import axios from "axios"
+import React, { useEffect, useState } from "react"
+import { Button, Col, Form, Modal, Row } from "react-bootstrap"
+import { ITaskModalOptions, ITasks } from "./interfaces"
 
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
-import { ITaskModal, ITasks } from './interfaces';
-
-const DuplicateModal: React.FC<ITaskModal> = (props) =>
+const TaskModal: React.FC<ITaskModalOptions> = (props) =>
 {
-    const { isShown, hide, t } = props
+    const { hide, isShown, t, modalType } = props
     const [taskName, setTaskName] = useState<string>()
     const [taskDescription, setDescription] = useState<string>()
     const [taskStartDate, setStartDate] = useState<string>()
     const [taskDueDate, setDueDate] = useState<string>()
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) =>
+    const handleAdd = (e: React.FormEvent<HTMLFormElement>) =>
+    {
+        e.preventDefault();
+        axios.post<ITasks>(process.env.REACT_APP_API + 'task', {
+            taskName: taskName,
+            taskDescription: taskDescription,
+            taskStartDate: taskStartDate,
+            taskDueDate: taskDueDate
+        }).then(response => { return response })
+        hide()
+    }
+
+    const handleEdit = (e: React.FormEvent<HTMLFormElement>) =>
+    {
+        e.preventDefault();
+        axios.put<ITasks>(process.env.REACT_APP_API + 'task', {
+            taskId: t.taskId,
+            taskName: taskName,
+            taskDescription: taskDescription,
+            taskStartDate: taskStartDate,
+            taskDueDate: taskDueDate
+        }).then(response => { console.log(response) })
+        axios.get<ITasks>(process.env.REACT_APP_API + 'task')
+        hide()
+    }
+
+    const handleDuplicate = (e: React.FormEvent<HTMLFormElement>) =>
     {
         e.preventDefault();
         axios.post<ITasks>(process.env.REACT_APP_API + 'task', {
@@ -32,17 +57,17 @@ const DuplicateModal: React.FC<ITaskModal> = (props) =>
 
     return (
         <div className="container">
-            <Modal show={isShown} size="lg" aria-labelledby="contained-modal-title-vcenter" centered >
+            <Modal show={isShown} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Header closeButton onHide={hide}>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Duplicate Task
-                </Modal.Title>
+                        {modalType === 'add' ? 'Add Task' : modalType === 'edit' ? 'Edit Task' : modalType === 'duplicate' ? 'Duplicate Task' : ''}
+                    </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
 
+                <Modal.Body>
                     <Row>
                         <Col sm={6}>
-                            <Form onSubmit={handleSubmit}>
+                            <Form onSubmit={modalType === 'add' ? handleAdd : modalType === 'edit' ? handleEdit : modalType === 'duplicate' ? handleDuplicate : undefined}>
 
                                 <Form.Group controlId="TaskID">
                                     <Form.Label>Task ID</Form.Label>
@@ -53,23 +78,20 @@ const DuplicateModal: React.FC<ITaskModal> = (props) =>
                                 <Form.Group controlId="TaskName">
                                     <Form.Label>Task Name</Form.Label>
                                     <Form.Control type="text" name="TaskName" required
-                                        placeholder="TaskName" onChange={e => setTaskName(e.target.value)} defaultValue={`Copy of - ${t.taskName}`} />
+                                        placeholder="TaskName" onChange={e => setTaskName(e.target.value)} defaultValue={t.taskName} />
                                 </Form.Group>
-
                                 <Form.Group controlId="TaskDescription">
                                     <Form.Label>Task Description</Form.Label>
-                                    <Form.Control type="text" name="TaskDscription" required
+                                    <Form.Control type="text" name="TaskDescription" required
                                         placeholder="TaskDescription" onChange={e => setDescription(e.target.value)} defaultValue={t.taskDescription} />
                                 </Form.Group>
-
                                 <Form.Group>
                                     <Button variant="primary" type="submit">
-                                        Duplicate Task
-                                </Button>
+                                        {modalType === 'add' ? 'Add Task' : modalType === 'edit' ? 'Update Task' : modalType === 'duplicate' ? 'Duplicate Task' : ''}
+                                    </Button>
                                 </Form.Group>
                             </Form>
                         </Col>
-
                         <Col sm={6}>
                             <Form.Group controlId="StartDate">
                                 <Form.Label>StartDate</Form.Label>
@@ -79,10 +101,9 @@ const DuplicateModal: React.FC<ITaskModal> = (props) =>
                                     required
                                     placeholder="StartDate"
                                     defaultValue={t.taskStartDate}
-                                    onChange={(e) => setStartDate(e.target.value ? e.target.value : t.taskStartDate)}
+                                    onChange={e => setStartDate(e.target.value)}
                                 />
                             </Form.Group>
-
                             <Form.Group controlId="DueDate">
                                 <Form.Label>DueDate</Form.Label>
                                 <Form.Control
@@ -91,21 +112,18 @@ const DuplicateModal: React.FC<ITaskModal> = (props) =>
                                     required
                                     placeholder="DueDate"
                                     defaultValue={t.taskDueDate}
-                                    onChange={e => setDueDate(e.target.value ? e.target.value : t.taskDueDate)}
+                                    onChange={e => setDueDate(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
-
                     </Row>
                 </Modal.Body>
 
                 <Modal.Footer>
                     <Button variant="danger" onClick={hide} >Close</Button>
                 </Modal.Footer>
-
             </Modal>
-
-        </div>
+        </div >
     )
 }
-export default DuplicateModal
+export default TaskModal

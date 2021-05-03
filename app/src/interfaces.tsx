@@ -18,10 +18,17 @@ export interface IUsers
 
 export interface ITaskModal
 {
-    modalType: string
     t: ITasks
     isShown: boolean
     hide: any
+}
+
+export interface ITaskModalOptions
+{
+    modalType: string
+    t: ITasks
+    isShown: boolean
+    hide: (() => void)
 }
 
 

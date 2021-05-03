@@ -4,21 +4,20 @@ import { Button, ButtonToolbar, Table } from 'react-bootstrap'
 import AddTaskModal from './AddTaskModal'
 import DuplicateTaskModal from './DuplicateTaskModal'
 import EditTaskModal from './EditTaskModal'
-import { ITasks } from './interfaces'
+import { ITaskModalOptions, ITasks } from './interfaces'
+import TaskModal from './TaskModal'
 
 const Tasks: React.FC<ITasks> = () =>
 {
     const [tasks, setTasks] = useState<ITasks[]>([])
-    const [addModal, setAddModal] = useState(false);
-    const [editModal, setEditModal] = useState(false);
-    const [dupModal, setDupModal] = useState(false);
+    const [showModal, setShowModal] = useState(false);
     const [taskid, setTaskid] = useState<number>()
     const [taskName, setTaskName] = useState<string>()
     const [taskDescription, setDescription] = useState<string>()
     const [taskStartDate, setStartDate] = useState<string>()
     const [taskDueDate, setDueDate] = useState<string>()
-    const [isDelete, setIsDelete] = useState(false)
-    const [modalType, setModalType] = useState<string>('add')
+    const [refresh, isRefresh] = useState(false)
+    const [modal, setModal] = useState<string>('add')
     const tObject = {
         taskName: taskName ? taskName : '',
         taskDescription: taskDescription ? taskDescription : '',
@@ -27,20 +26,10 @@ const Tasks: React.FC<ITasks> = () =>
         taskDueDate: taskDueDate ? taskDueDate : ''
     }
 
-    const toggleAddModal = () =>
+    const toggleModal = () =>
     {
         refreshList()
-        setAddModal(!addModal)
-    };
-
-    const toggleEditModal = () =>
-    {
-        setEditModal(!editModal)
-    };
-
-    const toggleDupModal = () =>
-    {
-        setDupModal(!dupModal)
+        setShowModal(!showModal)
     };
 
     const deleteTask = (id: number | undefined) =>
@@ -48,6 +37,7 @@ const Tasks: React.FC<ITasks> = () =>
         if (id)
         {
             axios.delete<number>(process.env.REACT_APP_API + 'task/' + id).then(response => { return response })
+            isRefresh(true)
         }
 
     }
@@ -63,8 +53,9 @@ const Tasks: React.FC<ITasks> = () =>
     useEffect(() =>
     {
         refreshList()
-        setIsDelete(false)
-    }, [addModal, editModal, isDelete, dupModal])
+        isRefresh(false)
+
+    }, [refresh, showModal])                                               //[addModal, editModal, refresh, dupModal])
 
     return (
         <div>
@@ -90,20 +81,27 @@ const Tasks: React.FC<ITasks> = () =>
                                 <ButtonToolbar className="justify-content-center">
                                     <Button className="mr-2" variant="info" onClick={() =>
                                     {
-                                        setAddModal(true); setTaskid(t.taskId); setTaskName(t.taskName);
-                                        setDescription(t.taskDescription); setStartDate(t.taskStartDate);
+                                        setShowModal(true);
+                                        setModal('edit')
+                                        setTaskid(t.taskId);
+                                        setTaskName(t.taskName);
+                                        setDescription(t.taskDescription);
+                                        setStartDate(t.taskStartDate);
                                         setDueDate(t.taskDueDate);
                                     }
                                     }>Edit</Button>
                                     <Button className="mr-2" variant="info" onClick={() =>
                                     {
-                                        setModalType('edit');
-                                        setDupModal(true); setTaskid(t.taskId); setTaskName(t.taskName);
-                                        setDescription(t.taskDescription); setStartDate(t.taskStartDate);
+                                        setModal('duplicate');
+                                        setShowModal(true);
+                                        setTaskid(t.taskId);
+                                        setTaskName(`Copy of ${t.taskName}`);
+                                        setDescription(t.taskDescription);
+                                        setStartDate(t.taskStartDate);
                                         setDueDate(t.taskDueDate);
                                     }
                                     }>Duplicate</Button>
-                                    <Button className="mr-2" variant="info" onClick={() => { deleteTask(t.taskId); setIsDelete(true) }} >Delete</Button>
+                                    <Button className="mr-2" variant="info" onClick={() => { deleteTask(t.taskId); isRefresh(true) }} >Delete</Button>
                                 </ButtonToolbar>
                             </td>
                         </tr>
@@ -111,11 +109,9 @@ const Tasks: React.FC<ITasks> = () =>
                 </tbody>
             </Table>
             <ButtonToolbar>
-                <Button variant='primary' onClick={() => { setAddModal(true); setModalType('add') }} >
+                <Button variant='primary' onClick={() => { setShowModal(true); setModal('add') }} >
                     Add Task</Button>
-                <AddTaskModal isShown={addModal} hide={toggleAddModal} t={tObject} modalType={modalType} />
-                {/* <EditTaskModal isShown={editModal} hide={toggleEditModal} t={tObject} />
-                <DuplicateTaskModal isShown={dupModal} hide={toggleDupModal} t={tObject} /> */}
+                < TaskModal isShown={showModal} hide={toggleModal} t={tObject} modalType={modal} />
             </ButtonToolbar>
         </div >
     )
