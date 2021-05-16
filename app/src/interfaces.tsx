@@ -30,5 +30,5 @@ export interface IUserModal
     modalType: string
     u: IUsers
     isShown: boolean
-    hide: any
+    hide: () => void
 }

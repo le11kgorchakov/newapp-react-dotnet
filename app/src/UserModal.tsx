@@ -11,8 +11,7 @@ const UserModal: React.FC<IUserModal> = (props) =>
     const [userLastName, setUserLastName] = useState<string>()
     const [tasks, setTasks] = useState<ITasks[]>([])
     const [selectedTask, setSelectedTask] = useState<string>()
-    const [photoFileName, setPhotoFileName] = useState("inmo.jpg")
-    const [imageSrc, setImageSrc] = useState<string>('')
+    const [imageSrc, setImageSrc] = useState(u.fileName)
 
     const getTasks = () =>
     {
@@ -26,11 +25,11 @@ const UserModal: React.FC<IUserModal> = (props) =>
     {
         e.preventDefault();
         axios.post(process.env.REACT_APP_API + 'user', {
-            userName: userName, userLastName: userLastName,
-            taskName: selectedTask, fileName: photoFileName
+            userName: userName,
+            userLastName: userLastName,
+            taskName: selectedTask,
+            fileName: imageSrc
         }).then(response => { return response })
-        axios.get(process.env.REACT_APP_API + 'user')
-        window.location.reload()
         hide()
     }
 
@@ -42,22 +41,8 @@ const UserModal: React.FC<IUserModal> = (props) =>
             userName: userName,
             userLastName: userLastName,
             taskName: selectedTask,
-            fileName: photoFileName
+            fileName: imageSrc
         }).then(response => { console.log(response) })
-        axios.get<IUsers>(process.env.REACT_APP_API + 'user')
-        hide()
-    }
-
-    const handleDuplicateUser = (e: React.FormEvent<HTMLFormElement>) =>
-    {
-        e.preventDefault();
-        axios.post<IUsers>(process.env.REACT_APP_API + 'user', {
-            userName: userName,
-            userLastName: userLastName,
-            taskName: selectedTask,
-            fileName: photoFileName
-        }).then(response => { console.log(response) })
-        axios.get<IUsers>(process.env.REACT_APP_API + 'user')
         hide()
     }
 
@@ -65,7 +50,7 @@ const UserModal: React.FC<IUserModal> = (props) =>
     {
         e.preventDefault();
         const file = e.target.files[0].name
-        setPhotoFileName(file ? file : "inmo.jpg")
+        setImageSrc(file ? file : "inmo.jpg")
         const formData = new FormData();
         formData.append(
             "myFile",
@@ -81,7 +66,7 @@ const UserModal: React.FC<IUserModal> = (props) =>
 
     useEffect(() =>
     {
-        getTasks(); setUserName(u.userName); setUserLastName(u.userLastName); setPhotoFileName(u.fileName); setSelectedTask(u.taskName)
+        getTasks(); setUserName(u.userName); setUserLastName(u.userLastName); setImageSrc(u.fileName); setSelectedTask(u.taskName)
     }, [u])
 
     return (
@@ -96,7 +81,7 @@ const UserModal: React.FC<IUserModal> = (props) =>
 
                     <Row>
                         <Col sm={6}>
-                            <Form onSubmit={modalType === 'add' ? handleAddUser : modalType === 'edit' ? handleEditUser : modalType === 'duplicate' ? handleDuplicateUser : undefined}>
+                            <Form onSubmit={modalType === 'add' ? handleAddUser : modalType === 'edit' ? handleEditUser : modalType === 'duplicate' ? handleAddUser : undefined}>
 
                                 <Form.Group controlId="UserID">
                                     <Form.Label>User ID</Form.Label>

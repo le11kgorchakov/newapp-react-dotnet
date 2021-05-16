@@ -95,7 +95,7 @@ const User: FunctionComponent<IUsers> = () =>
                                         {
                                             setModal('duplicate');
                                             setShowModal(true);
-                                            setUserId(u.userId);
+                                            //setUserId(u.userId);
                                             setUserName(`Copy of ${u.userName}`);
                                             setUserLastName(u.userLastName);
                                             setPhotoFileName(u.fileName);
@@ -112,7 +112,7 @@ const User: FunctionComponent<IUsers> = () =>
                 </tbody>
             </Table>
             <ButtonToolbar >
-                <Button variant='primary' onClick={() => { setShowModal(true); setModal('add') }} >
+                <Button variant='primary' onClick={() => { setShowModal(true); setModal('add'); setPhotoFileName('inmo.jpg') }} >
                     Add User</Button>
                 <UserModal isShown={showModal} u={uObject} modalType={modal} hide={toggleModal} />
             </ButtonToolbar>
