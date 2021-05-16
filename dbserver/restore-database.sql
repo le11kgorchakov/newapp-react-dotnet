@@ -12,8 +12,7 @@ CREATE TABLE Users (
   userName     VARCHAR(50),
   userLastName      VARCHAR(50),
   taskName       VARCHAR(50),
-  fileName      VARCHAR(50),
-  test VARCHAR(50)
+  fileName      VARCHAR(50)
 );
 GO
 
