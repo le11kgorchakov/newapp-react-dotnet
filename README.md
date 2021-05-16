@@ -10,7 +10,7 @@ to run dotnet
 
 - cd webapi
 - dotnet build
-- detnet run
+- dotnet run
 
 db is required
 

@@ -8,11 +8,12 @@ USE WebApi;
 GO
 
 CREATE TABLE Users (
-  userId        INT           NOT NULL  IDENTITY  PRIMARY KEY,
-  userName     VARCHAR(50)   NOT NULL,
-  userLastName      VARCHAR(50)   NOT NULL,
-  taskName       VARCHAR(50)   NOT NULL,
-  fileName      VARCHAR(50)   NOT NULL
+  userId        INT             IDENTITY  PRIMARY KEY,
+  userName     VARCHAR(50),
+  userLastName      VARCHAR(50),
+  taskName       VARCHAR(50),
+  fileName      VARCHAR(50),
+  test VARCHAR(50)
 );
 GO
 
@@ -22,11 +23,11 @@ INSERT INTO Users (userName, userLastName) VALUES
 GO
 
 CREATE TABLE Tasks (
-  taskId        INT           NOT NULL  IDENTITY  PRIMARY KEY,
-  taskName         VARCHAR(50)  NOT NULL,
-  taskDescription   VARCHAR(5000) NOT NULL, 
-  taskStartDate   VARCHAR(50) NOT NULL, 
-  taskDueDate   VARCHAR(50) NOT NULL
+  taskId        INT             IDENTITY  PRIMARY KEY,
+  taskName         VARCHAR(50),
+  taskDescription   VARCHAR(5000), 
+  taskStartDate   VARCHAR(50), 
+  taskDueDate   VARCHAR(50) 
 );
 GO
 
