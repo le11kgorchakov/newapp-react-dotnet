@@ -54,7 +54,7 @@ namespace WebApi.Controllers
         {
             string query = @"
                     insert into dbo.Users values 
-                    ('" + u.userName + "', '" + u.userLastName + "', '" + u.fileName + "','" + u.taskName + @"')
+                    ('" + u.userName + "', '" + u.userLastName + "', '" + u.taskName + "','" + u.fileName + @"')
                     ";
             DataTable table = new DataTable();
             string sqlDataSource = _db.GetConnectionString("DefaultConnection");

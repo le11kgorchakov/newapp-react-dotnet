@@ -95,7 +95,7 @@ const User: FunctionComponent<IUsers> = () =>
                                         {
                                             setModal('duplicate');
                                             setShowModal(true);
-                                            //setUserId(u.userId);
+                                            setUserId(u.userId);
                                             setUserName(`Copy of ${u.userName}`);
                                             setUserLastName(u.userLastName);
                                             setPhotoFileName(u.fileName);

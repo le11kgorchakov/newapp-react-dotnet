@@ -86,24 +86,24 @@ const UserModal: React.FC<IUserModal> = (props) =>
                                 <Form.Group controlId="UserID">
                                     <Form.Label>User ID</Form.Label>
                                     <Form.Control type="text" name="UserID" required
-                                        placeholder="UserID" disabled defaultValue={u.userId} />
+                                        placeholder="UserID" disabled defaultValue={modalType === 'add' ? '' : u.userId} />
                                 </Form.Group>
 
                                 <Form.Group controlId="UserName">
                                     <Form.Label>First Name</Form.Label>
                                     <Form.Control type="text" name="UserName" required
-                                        placeholder="UserName" onChange={e => setUserName(e.target.value)} defaultValue={u.userName} />
+                                        placeholder="UserName" onChange={e => setUserName(e.target.value)} defaultValue={modalType === 'add' ? '' : u.userName} />
                                 </Form.Group>
 
                                 <Form.Group controlId="UserLastName">
                                     <Form.Label>Last Name</Form.Label>
                                     <Form.Control type="text" name="UserLastName" required
-                                        placeholder="UserLastName" onChange={e => setUserLastName(e.target.value)} defaultValue={u.userLastName} />
+                                        placeholder="UserLastName" onChange={e => setUserLastName(e.target.value)} defaultValue={modalType === 'add' ? '' : u.userLastName} />
                                 </Form.Group>
 
                                 <Form.Group controlId="Task">
                                     <Form.Label>Select Task</Form.Label>
-                                    <Form.Control as="select" defaultValue={u.taskName} onChange={e => setSelectedTask(e.target.value)}>
+                                    <Form.Control as="select" defaultValue={modalType === 'add' ? '' : u.taskName} onChange={e => setSelectedTask(e.target.value)}>
                                         <option>Select Task</option>
                                         {tasks.map(t =>
                                             <option key={t.taskId} >{t.taskName}</option>)}

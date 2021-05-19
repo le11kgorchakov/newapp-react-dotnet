@@ -1,6 +1,3 @@
-DROP DATABASE IF EXISTS WebApi;
-GO
-
 CREATE DATABASE WebApi;
 GO
 
@@ -16,9 +13,9 @@ CREATE TABLE Users (
 );
 GO
 
-INSERT INTO Users (userName, userLastName) VALUES 
-  ('mark', 'twain'),
-  ('tom', 'sawyer');
+INSERT INTO Users (userName, userLastName, taskName, fileName) VALUES 
+  ('mark', 'twain', 'first', 'inmo.jpg'),
+  ('tom', 'sawyer', 'second', 'inmo.jpg');
 GO
 
 CREATE TABLE Tasks (
