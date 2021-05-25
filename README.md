@@ -14,7 +14,7 @@ to run dotnet
 
 db is required
 
-- cd dbserver
+- cd db
 - build:db
 - start:db
 
