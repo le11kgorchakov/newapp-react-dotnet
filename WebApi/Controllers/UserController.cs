@@ -175,7 +175,7 @@ namespace WebApi.Controllers
                         FileDownloadName = filename,
                     };
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 return null;
             }

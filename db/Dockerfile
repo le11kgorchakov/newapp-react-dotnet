@@ -9,3 +9,4 @@ COPY ./restore-database.sql .
 COPY ./restore-database.sh .
 
 CMD /bin/bash restore-database.sh
+

@@ -1,0 +1,15 @@
+{
+  "name": "my-app",
+  "version": "0.0.0",
+  "description": "react app",
+  "scripts": {
+    "build:db": "docker build -t dbimage .",
+    "restart:container": "docker restart dbcontainer",
+    "rm:container": "docker container rm dbcontainer",
+    "rm:image": "docker image rm dbimage",
+    "start:db": "docker run -d -p 1433:1433 --name dbcontainer dbimage",
+    "stop:db": "docker container stop dbcontainer"
+  },
+  "author": "alexg",
+  "license": "UNLICENSED"
+}
